@@ -4,9 +4,9 @@ San Francisco State University
 Copyright 2025
 Rights Reserved
 
-nodal_analysis.py
+analysis.py
 
-Run nodal analysis on a circuit
+Analysis methods that can be run on Circuit objects
 '''
 
 import numpy as np
