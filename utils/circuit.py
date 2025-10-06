@@ -64,7 +64,7 @@ class Circuit:
             else:
                 # set start to node with given node label
                 component.set_start(s_label)
-                # add component to connection list of node
+                # add component to connection list of node with '-' to note negative terminal 
                 s_label.add_connection(component)
             
             # if end is not an existing node
@@ -138,7 +138,7 @@ class Circuit:
             if node.get_label() == label:
                 return node
 
-        print("Error: Node not found.")    
+        #print("Error: Node not found.")    
         return -1
 
     '''
@@ -162,7 +162,7 @@ class Circuit:
         s_type = self.find_component(start_label)
         e_type = self.find_component(end_label)
 
-        if self.find_component(start_label) == -1:
+        if s_type == -1:
             start = self.find_node(start_label)
         else:
             start = self.find_component(start_label)
@@ -174,6 +174,8 @@ class Circuit:
 
         component = Component(label=label, type=type, start=start, end=end, value=value)
         self._components.append(component)
+        print(f"Added Component:\nLabel: {component.get_label()}\tType: {component.get_type()}\t\tStart: {component.get_start().get_label()}\tEnd: {component.get_end().get_label()}\tValue: {component.get_value()}")
+
 
         if s_type == -1:
             self.find_node(start_label).add_connection(component)
@@ -190,6 +192,6 @@ class Circuit:
             if component.get_label() == label:
                 return component
 
-        print("Error: Component not found.")    
+        #print("Error: Component not found.")    
         return -1
             

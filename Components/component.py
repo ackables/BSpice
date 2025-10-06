@@ -37,6 +37,27 @@ class Component:
         return self._label
     
     '''
+    Return terminal of component another component or node is connected to
+
+    Return:
+        '-' for start terminal
+        '+' for end terminal
+        -1 if fail
+    '''
+    def get_terminal(self, reference):
+        if not (isinstance(reference, Node) or isinstance(reference, Component)):
+            print("Error: Please provide a Node or Component object as argument.")
+            return -1
+        else:
+            if self.get_start().get_label() == reference.get_label():
+                return '-'
+            elif self.get_end().get_label() == reference.get_label():
+                return '+'
+            else:
+                print(f"Error: {reference.get_label()} is not connected to {self.get_label()}.")
+                return -1
+    
+    '''
     Return start node
     '''
     def get_start(self):
@@ -47,6 +68,7 @@ class Component:
     '''
     def set_start(self, start):
         self._start = start
+        print(f"{self.get_label()} start set to {start.get_label()}")
 
     '''
     Return end node
@@ -59,6 +81,7 @@ class Component:
     '''
     def set_end(self, end):
         self._end = end
+        print(f"{self.get_label()} end set to {end.get_label()}")
     
     '''
     Returns value of component

@@ -18,7 +18,8 @@ def main():
     for node in test._nodes:
         connections_list = []
         for connections in node.get_connections():
-            connections_list.append(connections.get_label())
+            terminal = connections.get_terminal(node)
+            connections_list.append(terminal + connections.get_label())
         print(f"Label: {node.get_label()}\tConnections: {connections_list}\tVoltage: {node.get_voltage()}")
 
     for component in test._components:
@@ -31,7 +32,8 @@ def main():
     for node in test._nodes:
         connections_list = []
         for connections in node.get_connections():
-            connections_list.append(connections.get_label())
+            terminal = connections.get_terminal(node)
+            connections_list.append(terminal + connections.get_label())
         print(f"Label: {node.get_label()}\tConnections: {connections_list}\tVoltage: {node.get_voltage()}")
 
     for component in test._components:

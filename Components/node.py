@@ -41,9 +41,11 @@ class Node:
         if isinstance(component, Iterable) and not isinstance(component, (str, bytes)):
             # extend with component list
             self._connections.extend(component)
+            print(f"{component.get_label()} connected to {self.get_label()}.")
         else:
             # append with single component
             self._connections.append(component)
+            print(f"{component.get_label()} connected to {self.get_label()}.")
 
     '''
     Return node voltage
