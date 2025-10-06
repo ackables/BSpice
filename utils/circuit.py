@@ -157,16 +157,28 @@ class Circuit:
             print("Error: end_label does not match any existing components or nodes.")
             return -1
         
+        # track whether start and end points are nodes or components
+        # -1 if Node
+        s_type = self.find_component(start_label)
+        e_type = self.find_component(end_label)
+
         if self.find_component(start_label) == -1:
             start = self.find_node(start_label)
         else:
             start = self.find_component(start_label)
 
-        if self.find_component(end_label) == -1:
+        if e_type == -1:
             end = self.find_node(end_label)
         else:
             end = self.find_component(end_label)
-        self._components.append(Component(label=label, type=type, start=start, end=end, value=value))
+
+        component = Component(label=label, type=type, start=start, end=end, value=value)
+        self._components.append(component)
+
+        if s_type == -1:
+            self.find_node(start_label).add_connection(component)
+        if e_type == -1:
+            self.find_node(end_label).add_connection(component)
 
     '''
     Return component with given label

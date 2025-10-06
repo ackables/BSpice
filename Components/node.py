@@ -6,7 +6,7 @@ Rights Reserved
 
 node.py
 
-Sets up Node class which will define the connections between components
+Sets up Node class which will define the connections between >2 components and/or define points where voltage wrt GND will be calculated
 '''
 
 import numpy as np
