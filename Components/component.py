@@ -10,11 +10,13 @@ Sets up Component class which will be the base block upon which all other compon
 '''
 
 import numpy as np
+from Components.node import Node
+from typing import Literal
 
-from node import Node
+TYPE = Literal['V', 'R']
 
 class Component:
-    def __init__(self, label, start = None, end = None, value = 0, type = None):
+    def __init__(self, label, type : TYPE, start = None, end = None, value = 0):
         # set start and end nodes
         self._start = start
         self._end = end
@@ -41,6 +43,16 @@ class Component:
         return self._start
     
     '''
+    Set start node
+    '''
+    def set_start(self, start):
+        if start is Node or start is Component:
+            self._start = start
+        else:
+            print("Error: start must be a Node or Component object.")
+            return -1
+
+    '''
     Return end node
     '''
     def get_end(self):
@@ -57,7 +69,19 @@ class Component:
     '''
     def set_value(self, value):
         self._value = value
+
+    '''
+    Returns component type
+    '''
+    def get_type(self):
+        return self.__type
     
+    '''
+    Sets component type
+    '''
+    def set_type(self, type : TYPE):
+        self._type = type
+
     '''
     Overrides __str__ function for components
     '''
