@@ -46,17 +46,19 @@ class Component:
     Set start node
     '''
     def set_start(self, start):
-        if start is Node or start is Component:
-            self._start = start
-        else:
-            print("Error: start must be a Node or Component object.")
-            return -1
+        self._start = start
 
     '''
     Return end node
     '''
     def get_end(self):
         return self._end
+    
+    '''
+    Set end node
+    '''
+    def set_end(self, end):
+        self._end = end
     
     '''
     Returns value of component
@@ -74,7 +76,7 @@ class Component:
     Returns component type
     '''
     def get_type(self):
-        return self.__type
+        return self._type
     
     '''
     Sets component type

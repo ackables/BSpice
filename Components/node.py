@@ -10,14 +10,14 @@ Sets up Node class which will define the connections between components
 '''
 
 import numpy as np
-from Components.component import Component
+from typing import Iterable, Optional, List
 
 class Node:
-    def __init__(self, label, connections: list | None, voltage = None):
+    def __init__(self, label, connections: Optional[List] = None, voltage = None):
         # name of node
         self._label = label
         # list of connected components
-        self._connections = connections
+        self._connections = connections if connections is not None else []
         # node voltage
         self._voltage = voltage
 
@@ -37,11 +37,13 @@ class Node:
     Add a single component or list of components to the connections list
     '''
     def add_connection(self, component):
-        if component is not list:
-            self._connections.append(component)
-
+        # if component is iterable and is not a string
+        if isinstance(component, Iterable) and not isinstance(component, (str, bytes)):
+            # extend with component list
+            self._connections.extend(component)
         else:
-            self._connections + component
+            # append with single component
+            self._connections.append(component)
 
     '''
     Return node voltage
@@ -59,5 +61,5 @@ class Node:
     Overrides __str__ function for nodes
     '''
     def __str__(self):
-        out = self.get_label() + '\t' + self.get_voltage() + '\t' + self.get_connections
+        out = self.get_label()# + '\t' + self.get_voltage() + '\t' + self.get_connections
         return out

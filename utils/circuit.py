@@ -26,11 +26,14 @@ class Circuit:
 
         for label in nodes:
             if label == 'GND':
+                print(f"Creating {label} node.")
                 self._nodes.append(Node(label=label, connections=None, voltage=0))
             else:
+                print(f"Creating {label} node.")
                 self._nodes.append(Node(label=label, connections=None, voltage=None))
 
         for label, type, start, end, value in components:
+            print(f"Creating {label} component.")
             self._components.append(Component(label=label, type=type, start=start, end=end, value=value))
 
         # build circuit connections
@@ -41,6 +44,7 @@ class Circuit:
     '''
     def __build_connections(self):
         for component in self._components:
+            print(f"Building connections for {component}")
             # search for nodes using start and end labels of components
             s_label = self.find_node(component.get_start())
             e_label = self.find_node(component.get_end())
@@ -87,11 +91,13 @@ class Circuit:
     return -1 if failed to add node
     '''
     def add_node(self, label : str, component : Component, anchor : Literal['start', 'end']):
-        for node in self._nodes.get_label():
-            if label == node:
+        for node in self._nodes:
+            if label == node.get_label():
                 print(f"Error: Node label, \"{label}\", already in use.")
                 return -1
         
+        component = self.find_component(component)
+
         if anchor == 'start':
             component_pair = component.get_start()
         elif anchor == 'end':
@@ -103,10 +109,12 @@ class Circuit:
         # create node in between two existing components
         if label == 'GND':
             # create special ground node
-            node = self._nodes.append(Node(label=label, connections=[component, component_pair], voltage=0))
+            node = Node(label=label, connections=[component, component_pair], voltage=0)
         else:
             # create normal node
-            node = self._nodes.append(Node(label=label, connections=[component, component_pair]))
+            node = Node(label=label, connections=[component, component_pair])
+        
+        self._nodes.append(node)
 
         # attaches node to component
         if anchor == 'start':
@@ -149,7 +157,16 @@ class Circuit:
             print("Error: end_label does not match any existing components or nodes.")
             return -1
         
-        self._components.append(Component(label=label, type=type, start=start_label, end=end_label, value=value))
+        if self.find_component(start_label) == -1:
+            start = self.find_node(start_label)
+        else:
+            start = self.find_component(start_label)
+
+        if self.find_component(end_label) == -1:
+            end = self.find_node(end_label)
+        else:
+            end = self.find_component(end_label)
+        self._components.append(Component(label=label, type=type, start=start, end=end, value=value))
 
     '''
     Return component with given label
@@ -157,7 +174,7 @@ class Circuit:
     Return -1 if component not found
     '''
     def find_component(self, label : str):
-        for component in self._nodes:
+        for component in self._components:
             if component.get_label() == label:
                 return component
 
