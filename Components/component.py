@@ -16,7 +16,7 @@ from typing import Literal
 TYPE = Literal['V', 'R']
 
 class Component:
-    def __init__(self, label, type : TYPE, start = None, end = None, value = 0):
+    def __init__(self, label, type : TYPE, start = None, end = None, value = 0, current = None):
         # set start and end nodes
         self._start = start
         self._end = end
@@ -26,6 +26,9 @@ class Component:
 
         # set value of component
         self._value = value
+
+        # set current from start to end
+        self._current = current
 
         # define type of component
         self._type = type
@@ -83,6 +86,27 @@ class Component:
         self._end = end
         print(f"{self.get_label()} end set to {end.get_label()}")
     
+    '''
+    Flip start and end connections
+    '''
+    def flip(self):
+        # store current end in start
+        start = self.get_end()
+        # store current start in end
+        end = self.get_start()
+
+        # reassign values
+        self.set_start(start)
+        self.set_end(end)
+        print(f"{self.get_label()} connections flipped.")
+
+        # align terminals of neighboring components so components are connected end->start or start->end
+        if isinstance(start, Component) and start.get_terminal(self) is not '+':
+            start.flip()
+        if isinstance(end, Component) and end.get_terminal(self) is not '-':
+            end.flip()
+
+
     '''
     Returns value of component
     '''

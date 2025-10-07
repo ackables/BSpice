@@ -10,6 +10,7 @@ Sets up Node class which will define the connections between >2 components and/o
 '''
 
 import numpy as np
+import random
 from typing import Iterable, Optional, List
 
 class Node:
@@ -59,6 +60,33 @@ class Node:
     def set_voltage(self, voltage):
         self._voltage = voltage
 
+    def set_kcl(self):
+        '''
+        Set orientations of components at a node so Kirchoff's Current Law may be applied
+        '''
+        curr_neg = []
+        curr_pos = []
+        recursive = False
+        # populate list of positive and negative components
+        for component in self.get_connections():
+            if component.get_terminal(self) == '-':
+                curr_neg.append(component)
+            if component.get_terminal(self) == '+':
+                curr_pos.append(component)
+        
+        # if either list is empty, flip a component in the other list
+        if len(curr_neg) == 0:
+            curr_pos[int(random.random()%len(self.get_connections()))].flip()
+            # recheck kcl
+            recusive = True
+            self.set_kcl()
+        if len(curr_pos) == 0:
+            curr_neg[int(random.random()%len(self.get_connections()))].flip()
+            # recheck kcl
+            recursive = True
+            self.set_kcl()
+
+        return curr_neg, curr_pos, recursive
     '''
     Overrides __str__ function for nodes
     '''
